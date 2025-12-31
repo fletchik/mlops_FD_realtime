@@ -1,26 +1,32 @@
-flowchart LR
-  ZK[(zookeeper)]
-  Kafka[(kafka)]
-  Setup[kafka-setup - creates topics]
-  KafkaUI[kafka-ui]
+# C4 Level 3 — Components
 
-  Interface[interface - Streamlit]
-  Fraud[fraud_detector - ML scoring service]
+```mermaid
+flowchart LR
+  ZK[Zookeeper]
+  Kafka[Kafka]
+  Setup[Kafka setup]
+  KafkaUI[Kafka UI]
+
+  Interface[Interface Streamlit]
+  Fraud[Fraud detector service]
 
   Kafka --- ZK
-  Setup -->|creates: transactions, scoring| Kafka
-  KafkaUI -->|browse topics| Kafka
+  Setup -->|creates topics| Kafka
+  KafkaUI -->|views topics| Kafka
 
-  Interface -->|produce: transactions| Kafka
-  Kafka -->|consume: transactions| Fraud
-  Fraud -->|produce: scoring| Kafka
+  Interface -->|produces transactions| Kafka
+  Kafka -->|sends transactions| Fraud
+  Fraud -->|publishes scores| Kafka
 
-  subgraph FraudInternal[fraud_detector internal components]
+  subgraph FraudInternal[Fraud detector internal components]
     Consumer[Kafka consumer]
-    Preproc[Preprocessing]
+    Preprocessing[Preprocessing]
     Inference[Model inference]
     Producer[Kafka producer]
-    Consumer --> Preproc --> Inference --> Producer
+
+    Consumer --> Preprocessing
+    Preprocessing --> Inference
+    Inference --> Producer
   end
 
   Fraud --> Consumer

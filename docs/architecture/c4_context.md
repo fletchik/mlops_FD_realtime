@@ -1,10 +1,13 @@
+# C4 Level 1 — System Context
+
+```mermaid
 flowchart LR
-  User[User / Analyst]
-  Interface[interface - Streamlit Web UI]
-  Kafka[(Kafka)]
+  User[User Analyst]
+  Interface[Interface Streamlit UI]
+  Kafka[Kafka]
   System[Fraud Detection System]
 
   User -->|uses UI| Interface
-  Interface -->|produces to topic: transactions| Kafka
-  Kafka -->|delivers transactions (consume)| System
-  System -->|publishes to topic: scoring| Kafka
+  Interface -->|produces transactions| Kafka
+  Kafka -->|delivers transactions| System
+  System -->|publishes scores| Kafka
